@@ -19,6 +19,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { env } from "@/env/env";
 
 type LoginData = z.infer<typeof loginSchema>;
 
@@ -39,7 +40,7 @@ export function LoginForm({
 
   async function onSubmit(data: LoginData) {
     try {
-      const res = await fetch("http://localhost:3333/sessions", {
+      const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
