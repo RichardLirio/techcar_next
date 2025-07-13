@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -13,13 +14,13 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { loginSchema } from "@/schemas/login-schema";
+import { loginSchema } from "@/data/schemas/login-schema";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { env } from "@/env/env";
+import { api } from "@/data/api";
 
 type LoginData = z.infer<typeof loginSchema>;
 
@@ -40,7 +41,7 @@ export function LoginForm({
 
   async function onSubmit(data: LoginData) {
     try {
-      const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/login`, {
+      const res = await api(`login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,9 +66,9 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Bem vindo</CardTitle>
-          <CardDescription>
-            Entre com seu e-mail e senha para acessar sua conta.
+          <CardTitle className="text-2xl">Bem Vindo</CardTitle>
+          <CardDescription className="font-medium">
+            Todo gerenciamento da sua oficina em um só lugar.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -122,6 +123,12 @@ export function LoginForm({
           </form>
         </CardContent>
       </Card>
+      {/* <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
+        <a href="https://www.hm.inf.br/">
+          {" "}
+          Todos direitos reservados Nome da empresa
+        </a>
+      </div> */}
     </div>
   );
 }

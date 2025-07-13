@@ -1,17 +1,33 @@
 import { LoginForm } from "@/components/login-form";
 import { Car } from "lucide-react";
+import image1 from "./gradient-technology-background.jpg";
+import image2 from "./login2.png";
+import image3 from "./loginimgae.png";
 
-export default function Page() {
+export default function Login() {
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="flex w-full max-w-sm flex-col gap-6">
-        <a className="flex items-center gap-2 self-center font-semibold">
-          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <Car className="size-4" />
+    <div className="grid min-h-svh lg:grid-cols-2">
+      <div className="flex flex-col gap-4 p-6 md:p-10">
+        <div className="flex justify-center gap-2 md:justify-start">
+          <a href="#" className="flex items-center gap-2 font-semibold">
+            <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+              <Car className="size-5" />
+            </div>
+            TechCar
+          </a>
+        </div>
+        <div className="flex flex-1 items-center justify-center">
+          <div className="w-full max-w-96">
+            <LoginForm />
           </div>
-          Farol Web
-        </a>
-        <LoginForm />
+        </div>
+      </div>
+      <div className="bg-muted relative hidden lg:block">
+        <img
+          src={image2.src}
+          alt="Image"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
       </div>
     </div>
   );
