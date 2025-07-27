@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Car, LayoutDashboardIcon, Users } from "lucide-react";
+import { Car, LayoutDashboardIcon, ListIcon, Users } from "lucide-react";
 import { NavMain } from "@/components/nav-main";
 import { Separator } from "@/components/ui/separator";
 import { NavUser } from "@/components/nav-user";
@@ -46,8 +46,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const data = {
     userState,
-    navMain: [{ title: "Dashboard", url: "/", icon: LayoutDashboardIcon }],
-    navSecondary: [{ title: "Usuários", url: "/usuarios", icon: Users }],
+    navMain: [
+      { title: "Dashboard", url: "/", icon: LayoutDashboardIcon },
+      { title: "Clientes", url: "/clients", icon: ListIcon },
+    ],
+    navSecondary: [{ title: "Usuários", url: "/admin/usuarios", icon: Users }],
   };
 
   return (

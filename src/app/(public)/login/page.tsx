@@ -1,8 +1,6 @@
 import { LoginForm } from "@/components/login-form";
 import { Car } from "lucide-react";
-import image1 from "./gradient-technology-background.jpg";
-import image2 from "./login2.png";
-import image3 from "./loginimgae.png";
+import image1 from "./login.png";
 
 export default function Login() {
   return (
@@ -24,7 +22,7 @@ export default function Login() {
       </div>
       <div className="bg-muted relative hidden lg:block">
         <img
-          src={image2.src}
+          src={image1.src}
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover"
         />

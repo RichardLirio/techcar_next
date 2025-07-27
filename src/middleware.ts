@@ -11,7 +11,7 @@ const publicRoutes = [
 const roleProtectedRoutes = [
   {
     path: "/admin/usuarios",
-    role: "SUPER_ADMIN",
+    role: "ADMIN",
   },
 ] as const;
 
