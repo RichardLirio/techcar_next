@@ -3,7 +3,7 @@ import { ProfileLogin } from "@/schemas/userProfile-schema";
 import { cookies } from "next/headers";
 
 // Tipo para resposta de sucesso
-export interface SuccessResponse {
+export interface SuccessResponseProfile {
   success: true;
   message: string;
   data: { user: ProfileLogin };
@@ -20,6 +20,6 @@ export async function getUser() {
     },
   });
 
-  const userReponse: SuccessResponse = await response.json();
+  const userReponse: SuccessResponseProfile = await response.json();
   return userReponse.data.user;
 }
