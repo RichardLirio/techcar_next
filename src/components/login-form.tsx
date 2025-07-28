@@ -14,13 +14,13 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { loginSchema } from "@/data/schemas/login-schema";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { api } from "@/data/api";
+import { loginSchema } from "@/schemas/login-schema";
 
 type LoginData = z.infer<typeof loginSchema>;
 

@@ -1,7 +1,7 @@
 // contexts/AuthContext.tsx
 "use client";
 
-import { ProfileLogin } from "@/data/schemas/userProfile-schema";
+import { ProfileLogin } from "@/schemas/userProfile-schema";
 import { createContext, useContext } from "react";
 
 const AuthContext = createContext<{ user: ProfileLogin | null }>({

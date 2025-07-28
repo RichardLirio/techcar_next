@@ -1,5 +1,5 @@
 import { api } from "@/data/api";
-import { ProfileLogin } from "@/data/schemas/userProfile-schema";
+import { ProfileLogin } from "@/schemas/userProfile-schema";
 import { cookies } from "next/headers";
 
 // Tipo para resposta de sucesso
