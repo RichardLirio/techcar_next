@@ -5,17 +5,14 @@ export const createUserSchema = z.object({
   email: z.string().email("Email inválido"),
   password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
   name: z.string().min(1, "Nome é obrigatório").toUpperCase(),
-  role: z.enum(["ADMIN", "USER"]),
+  role: z.enum(["ADMIN", "USER"], { required_error: "Cargo é obrigatório" }),
 });
 
 export const updateUserSchema = z.object({
   email: z.string().email("Email inválido").optional(),
-  password: z
-    .string()
-    .min(6, "Senha deve ter pelo menos 6 caracteres")
-    .optional(),
+  password: z.string().optional(),
   name: z.string().min(1, "Nome é obrigatório").toUpperCase().optional(),
-  role: z.enum(["ADMIN", "USER"]).optional(),
+  role: z.enum(["ADMIN", "USER"], { required_error: "Cargo é obrigatório" }),
 });
 
 export const fetchUserSchema = z.object({

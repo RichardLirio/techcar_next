@@ -3,7 +3,11 @@
 import { revalidateTag } from "next/cache";
 import { api } from "@/data/api";
 import { cookies } from "next/headers";
-import { CreateUserInput, FetchUserData } from "@/schemas/users.schemas";
+import {
+  CreateUserInput,
+  FetchUserData,
+  UpdateUserInput,
+} from "@/schemas/users.schemas";
 import { SuccessResponse } from "@/@types/response";
 
 export async function createUsuarioAction(data: CreateUserInput) {
@@ -73,4 +77,27 @@ export async function getUsersData() {
   if (responseData.success && responseData.data) {
     return responseData.data.users;
   }
+}
+
+export async function updateUsuarioAction(id: string, data: UpdateUserInput) {
+  const cookieStore = await cookies();
+  const refreshToken = cookieStore.get("refreshToken")?.value;
+
+  const response = await api(`users/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${refreshToken}`,
+    },
+    body: JSON.stringify(data),
+    credentials: "include",
+  });
+
+  const responseData = await response.json();
+
+  if (!response.ok) throw new Error(responseData.message);
+
+  revalidateTag("users");
+
+  return responseData;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Trash2 } from "lucide-react";
+import { MoreHorizontal, Trash2, Edit, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/dialog";
 import { deleteUsuarioAction } from "@/app/actions/users.actions";
 import { FetchUserData } from "@/schemas/users.schemas";
+import { UserDialog } from "@/components/user-dialog";
 
 export const columns: ColumnDef<FetchUserData>[] = [
   {
@@ -67,9 +68,10 @@ export const columns: ColumnDef<FetchUserData>[] = [
   {
     id: "actions",
     header: "Ações",
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
       const user = row.original;
-      const [open, setOpen] = useState(false);
+      const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+      const [editDialogOpen, setEditDialogOpen] = useState(false);
 
       async function handleDeleteUser() {
         try {
@@ -78,8 +80,13 @@ export const columns: ColumnDef<FetchUserData>[] = [
         } catch (err: any) {
           toast.error(err.message);
         } finally {
-          setOpen(false);
+          setDeleteDialogOpen(false);
         }
+      }
+
+      function handleEditSuccess() {
+        setEditDialogOpen(false);
+        toast.success("Usuário editado com sucesso");
       }
 
       return (
@@ -94,12 +101,17 @@ export const columns: ColumnDef<FetchUserData>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Ações</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Visualizar</DropdownMenuItem>
-              <DropdownMenuItem>Editar</DropdownMenuItem>
+
+              <DropdownMenuItem onClick={() => setEditDialogOpen(true)}>
+                <Edit className="mr-2 h-4 w-4" />
+                Editar
+              </DropdownMenuItem>
+
               <DropdownMenuSeparator />
+
               <DropdownMenuItem
                 className="text-red-600"
-                onClick={() => setOpen(true)}
+                onClick={() => setDeleteDialogOpen(true)}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Excluir
@@ -107,8 +119,22 @@ export const columns: ColumnDef<FetchUserData>[] = [
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Dialog de confirmação */}
-          <Dialog open={open} onOpenChange={setOpen}>
+          {/* Dialog de edição */}
+          <UserDialog
+            mode="edit"
+            user={{
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              role: user.role,
+            }}
+            open={editDialogOpen}
+            onOpenChange={setEditDialogOpen}
+            onSuccess={handleEditSuccess}
+          />
+
+          {/* Dialog de confirmação de exclusão */}
+          <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Confirmar exclusão</DialogTitle>
