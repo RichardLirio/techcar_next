@@ -40,17 +40,15 @@ export async function deleteUsuarioAction(userId: string) {
     },
     credentials: "include",
   });
-
+  if (response.status === 204) {
+    revalidateTag("users");
+    return;
+  }
   const responseData = await response.json();
 
   if (!response.ok) throw new Error(responseData.message);
 
-  if (response.status === 200) {
-    revalidateTag("users");
-    return responseData.message;
-  }
-
-  return responseData;
+  return;
 }
 
 export async function getUsersData() {

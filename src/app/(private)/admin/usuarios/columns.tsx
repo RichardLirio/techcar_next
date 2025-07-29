@@ -75,8 +75,8 @@ export const columns: ColumnDef<FetchUserData>[] = [
         try {
           await deleteUsuarioAction(user.id);
           toast.success("Usuário excluído com sucesso");
-        } catch (err) {
-          toast.error("Erro ao excluir o usuário");
+        } catch (err: any) {
+          toast.error(err.message);
         } finally {
           setOpen(false);
         }
