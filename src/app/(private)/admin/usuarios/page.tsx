@@ -10,7 +10,7 @@ import React from "react";
 import { columns } from "./columns";
 import { getUsersData } from "@/app/actions/users.actions";
 
-export default async function Usuarios() {
+export default async function UsersPage() {
   const data = await getUsersData();
   return (
     <div className="flex flex-1 flex-col p-2">

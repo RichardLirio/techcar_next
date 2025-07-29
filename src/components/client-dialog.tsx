@@ -92,7 +92,9 @@ export function ClientDialog({
     }
   }, [client, isEditing, setValue]);
 
-  async function handleSubmitUser(data: CreateClientInput | UpdateClientInput) {
+  async function handleSubmitClient(
+    data: CreateClientInput | UpdateClientInput
+  ) {
     try {
       let response: SuccessResponse;
 
@@ -199,7 +201,7 @@ export function ClientDialog({
         </DialogHeader>
 
         <form
-          onSubmit={handleSubmit(handleSubmitUser, handleInvalidForm)}
+          onSubmit={handleSubmit(handleSubmitClient, handleInvalidForm)}
           className="space-y-4 w-full h-full"
         >
           <div className="grid grid-cols-4 items-center text-right gap-3">

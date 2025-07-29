@@ -21,16 +21,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
-import { ClientDialog } from "@/components/client-dialog";
+import { VehicleDialog } from "@/components/vehicle-dialog";
+import { FetchClientData } from "@/schemas/clients.schemas";
+import { getDataClients } from "@/app/actions/clients.actions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  clients?: FetchClientData[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  clients,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -63,23 +67,15 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4 gap-4">
         <Input
-          placeholder="Filtrar Nomes..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          placeholder="Filtrar Placas..."
+          value={(table.getColumn("plate")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <Input
-          placeholder="Filtrar Cnpf ou Cnpj..."
-          value={(table.getColumn("cpfCnpj")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("cpfCnpj")?.setFilterValue(event.target.value)
+            table.getColumn("plate")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
         {/* Dialog para criação de clientes */}
-        <ClientDialog />
+        <VehicleDialog mode="create" clients={clients} />
       </div>
       <div className="rounded-md border">
         <Table>

@@ -22,45 +22,49 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { FetchClientData } from "@/schemas/clients.schemas";
-import { deleteClienteAction } from "@/app/actions/clients.actions";
-import { ClientDialog } from "@/components/client-dialog";
+import { FetchVehicleData } from "@/schemas/vehicles.schemas";
+import { deleteVehicleAction } from "@/app/actions/vehicles.actions";
+import { VehicleDialog } from "@/components/vehicle-dialog";
 
-export const columns: ColumnDef<FetchClientData>[] = [
+export const columns: ColumnDef<FetchVehicleData>[] = [
   {
-    accessorKey: "name",
-    header: "Nome",
+    accessorKey: "plate",
+    header: "Placa",
   },
   {
-    accessorKey: "cpfCnpj",
-    header: "Cpf/Cnpj",
+    accessorKey: "brand",
+    header: "Marca",
   },
   {
-    accessorKey: "phone",
-    header: "Telefone",
+    accessorKey: "model",
+    header: "Modelo",
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "year",
+    header: "Ano",
   },
   {
-    accessorKey: "address",
-    header: "Endereço",
+    accessorKey: "kilometers",
+    header: "KM",
+  },
+  {
+    accessorKey: "client.name",
+    header: "Cliente",
   },
   {
     id: "actions",
     header: "Ações",
     cell: ({ row }) => {
-      const client = row.original;
+      const vehicle = row.original;
       const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
       const [editDialogOpen, setEditDialogOpen] = useState(false);
 
-      async function handleDeleteClient() {
+      async function handleDeleteVehicle() {
         try {
-          await deleteClienteAction(client.id);
-          toast.success("Cliente excluído com sucesso");
+          await deleteVehicleAction(vehicle.id);
+          toast.success("Veículo excluído com sucesso");
         } catch (err) {
-          toast.error("Erro ao excluir o cliente");
+          toast.error("Erro ao excluir o veículo");
         } finally {
           setDeleteDialogOpen(false);
         }
@@ -89,7 +93,7 @@ export const columns: ColumnDef<FetchClientData>[] = [
                 Editar
               </DropdownMenuItem>
 
-              {/** TODO: Criar paragina para vizualizar detalhes do cliente, como veiculos e ordens de serviços*/}
+              {/** TODO: Criar paragina para vizualizar detalhes do veiculo, como ordens de serviços*/}
               <DropdownMenuItem>
                 <SquareUserRound className="mr-2 h-4 w-4" />
                 Detalhes
@@ -108,15 +112,18 @@ export const columns: ColumnDef<FetchClientData>[] = [
           </DropdownMenu>
 
           {/* Dialog de edição */}
-          <ClientDialog
+          <VehicleDialog
             mode="edit"
-            client={{
-              id: client.id,
-              name: client.name,
-              cpfCnpj: client.cpfCnpj,
-              phone: client.phone ? client.phone : "",
-              email: client.email ? client.email : "",
-              address: client.address ? client.address : "",
+            vehicle={{
+              plate: vehicle.plate,
+              model: vehicle.model,
+              brand: vehicle.brand,
+              kilometers: vehicle.kilometers,
+              year: vehicle.year ? vehicle.year : 0,
+              clientId: vehicle.clientId,
+              id: vehicle.id,
+              createdAt: vehicle.createdAt,
+              updatedAt: vehicle.updatedAt,
             }}
             open={editDialogOpen}
             onOpenChange={setEditDialogOpen}
@@ -129,8 +136,8 @@ export const columns: ColumnDef<FetchClientData>[] = [
               <DialogHeader>
                 <DialogTitle>Confirmar exclusão</DialogTitle>
                 <DialogDescription>
-                  Tem certeza que deseja excluir o cliente{" "}
-                  <strong>{client.name}</strong>? Esta ação não poderá ser
+                  Tem certeza que deseja excluir o veículo de placa{" "}
+                  <strong>{vehicle.plate}</strong>? Esta ação não poderá ser
                   desfeita.
                 </DialogDescription>
               </DialogHeader>
@@ -138,7 +145,7 @@ export const columns: ColumnDef<FetchClientData>[] = [
                 <DialogClose asChild>
                   <Button variant="outline">Cancelar</Button>
                 </DialogClose>
-                <Button variant="destructive" onClick={handleDeleteClient}>
+                <Button variant="destructive" onClick={handleDeleteVehicle}>
                   Confirmar
                 </Button>
               </DialogFooter>
