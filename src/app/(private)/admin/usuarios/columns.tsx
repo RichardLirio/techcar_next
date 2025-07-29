@@ -68,7 +68,7 @@ export const columns: ColumnDef<FetchUserData>[] = [
   {
     id: "actions",
     header: "Ações",
-    cell: ({ row, table }) => {
+    cell: ({ row }) => {
       const user = row.original;
       const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
       const [editDialogOpen, setEditDialogOpen] = useState(false);

@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Trash2 } from "lucide-react";
+import { Edit, MoreHorizontal, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,9 +11,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale/pt-BR";
 import { useState } from "react";
 import { toast } from "sonner";
 import {
@@ -26,6 +23,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { FetchClientData } from "@/schemas/clients.schemas";
+import { deleteClienteAction } from "@/app/actions/clients.actions";
+import { ClientDialog } from "@/components/client-dialog";
 
 export const columns: ColumnDef<FetchClientData>[] = [
   {
@@ -53,18 +52,24 @@ export const columns: ColumnDef<FetchClientData>[] = [
     header: "Ações",
     cell: ({ row }) => {
       const client = row.original;
-      const [open, setOpen] = useState(false);
+      const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+      const [editDialogOpen, setEditDialogOpen] = useState(false);
 
-      // async function handleDeleteUser() {
-      //   try {
-      //     await deleteUsuarioAction(user.id);
-      //     toast.success("Usuário excluído com sucesso");
-      //   } catch (err) {
-      //     toast.error("Erro ao excluir o usuário");
-      //   } finally {
-      //     setOpen(false);
-      //   }
-      // }
+      async function handleDeleteClient() {
+        try {
+          await deleteClienteAction(client.id);
+          toast.success("Cliente excluído com sucesso");
+        } catch (err) {
+          toast.error("Erro ao excluir o cliente");
+        } finally {
+          setDeleteDialogOpen(false);
+        }
+      }
+
+      function handleEditSuccess() {
+        setEditDialogOpen(false);
+        toast.success("Cliente editado com sucesso");
+      }
 
       return (
         <>
@@ -78,12 +83,17 @@ export const columns: ColumnDef<FetchClientData>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Ações</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Visualizar</DropdownMenuItem>
-              <DropdownMenuItem>Editar</DropdownMenuItem>
+
+              <DropdownMenuItem onClick={() => setEditDialogOpen(true)}>
+                <Edit className="mr-2 h-4 w-4" />
+                Editar
+              </DropdownMenuItem>
+
               <DropdownMenuSeparator />
+
               <DropdownMenuItem
                 className="text-red-600"
-                onClick={() => setOpen(true)}
+                onClick={() => setDeleteDialogOpen(true)}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Excluir
@@ -91,8 +101,24 @@ export const columns: ColumnDef<FetchClientData>[] = [
             </DropdownMenuContent>
           </DropdownMenu>
 
+          {/* Dialog de edição */}
+          <ClientDialog
+            mode="edit"
+            client={{
+              id: client.id,
+              name: client.name,
+              cpfCnpj: client.cpfCnpj,
+              phone: client.phone ? client.phone : "",
+              email: client.email ? client.email : "",
+              address: client.address ? client.address : "",
+            }}
+            open={editDialogOpen}
+            onOpenChange={setEditDialogOpen}
+            onSuccess={handleEditSuccess}
+          />
+
           {/* Dialog de confirmação */}
-          <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Confirmar exclusão</DialogTitle>
@@ -106,8 +132,9 @@ export const columns: ColumnDef<FetchClientData>[] = [
                 <DialogClose asChild>
                   <Button variant="outline">Cancelar</Button>
                 </DialogClose>
-                {/** onClick={handleDeleteclient}*/}
-                <Button variant="destructive">Confirmar</Button>
+                <Button variant="destructive" onClick={handleDeleteClient}>
+                  Confirmar
+                </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
