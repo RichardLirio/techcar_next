@@ -5,6 +5,7 @@ export const createUserSchema = z.object({
   email: z.string().email("Email inválido"),
   password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
   name: z.string().min(1, "Nome é obrigatório").toUpperCase(),
+  role: z.enum(["ADMIN", "USER"]),
 });
 
 export const updateUserSchema = z.object({

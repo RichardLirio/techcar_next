@@ -28,6 +28,16 @@ import { SuccessResponse } from "@/@types/response";
 
 export function CreateUsuarioDialog() {
   const [open, setOpen] = useState(false);
+  const roles = [
+    {
+      descricao: "Administrador",
+      role: "ADMIN",
+    },
+    {
+      descricao: "Usuario",
+      role: "USER",
+    },
+  ];
   const {
     register,
     handleSubmit,
@@ -119,6 +129,27 @@ export function CreateUsuarioDialog() {
               {...register("password")}
               placeholder={errors.password?.message}
             />
+
+            {/* Role */}
+            <label htmlFor="role" className="col-span-1 font-medium">
+              Cargo
+            </label>
+            <Select
+              onValueChange={(value: "ADMIN" | "USER") =>
+                setValue("role", value)
+              }
+            >
+              <SelectTrigger className="col-span-3">
+                <SelectValue placeholder="Selecione um cargo" />
+              </SelectTrigger>
+              <SelectContent>
+                {roles.map((role) => (
+                  <SelectItem key={role.role} value={role.role}>
+                    {role.descricao}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <DialogFooter className="mt-4">
             <DialogClose asChild>
