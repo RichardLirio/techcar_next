@@ -30,7 +30,7 @@ import { FetchUserData } from "@/schemas/users.schemas";
 
 export const columns: ColumnDef<FetchUserData>[] = [
   {
-    accessorKey: "nome",
+    accessorKey: "name",
     header: "Nome",
   },
   {
