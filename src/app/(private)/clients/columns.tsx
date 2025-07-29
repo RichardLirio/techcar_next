@@ -25,62 +25,46 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { deleteUsuarioAction } from "@/app/actions/users.actions";
-import { FetchUserData } from "@/schemas/users.schemas";
+import { FetchClientData } from "@/schemas/clients.schemas";
 
-export const columns: ColumnDef<FetchUserData>[] = [
+export const columns: ColumnDef<FetchClientData>[] = [
   {
     accessorKey: "name",
     header: "Nome",
+  },
+  {
+    accessorKey: "cpfCnpj",
+    header: "Cpf/Cnpj",
+  },
+  {
+    accessorKey: "phone",
+    header: "Telefone",
   },
   {
     accessorKey: "email",
     header: "Email",
   },
   {
-    accessorKey: "role",
-    header: "Cargo",
-    cell: ({ row }) => {
-      const cargo = row.getValue("role") as string;
-      const badgeStyle = cargo === "ADMIN" ? "bg-red-500" : "bg-blue-500";
-      return (
-        <span
-          className={cn(
-            "text-white px-2 py-1 rounded text-xs font-semibold",
-            badgeStyle
-          )}
-        >
-          {cargo}
-        </span>
-      );
-    },
-  },
-  {
-    accessorKey: "createdAt",
-    header: "Criado em",
-    cell: ({ row }) => {
-      const value = row.getValue("createdAt") as string;
-      const date = new Date(value);
-      return format(date, "dd/MM/yyyy", { locale: ptBR });
-    },
+    accessorKey: "address",
+    header: "Endereço",
   },
   {
     id: "actions",
     header: "Ações",
     cell: ({ row }) => {
-      const user = row.original;
+      const client = row.original;
       const [open, setOpen] = useState(false);
 
-      async function handleDeleteUser() {
-        try {
-          await deleteUsuarioAction(user.id);
-          toast.success("Usuário excluído com sucesso");
-        } catch (err) {
-          toast.error("Erro ao excluir o usuário");
-        } finally {
-          setOpen(false);
-        }
-      }
+      // async function handleDeleteUser() {
+      //   try {
+      //     await deleteUsuarioAction(user.id);
+      //     toast.success("Usuário excluído com sucesso");
+      //   } catch (err) {
+      //     toast.error("Erro ao excluir o usuário");
+      //   } finally {
+      //     setOpen(false);
+      //   }
+      // }
 
       return (
         <>
@@ -113,8 +97,8 @@ export const columns: ColumnDef<FetchUserData>[] = [
               <DialogHeader>
                 <DialogTitle>Confirmar exclusão</DialogTitle>
                 <DialogDescription>
-                  Tem certeza que deseja excluir o usuário{" "}
-                  <strong>{user.name}</strong>? Esta ação não poderá ser
+                  Tem certeza que deseja excluir o cliente{" "}
+                  <strong>{client.name}</strong>? Esta ação não poderá ser
                   desfeita.
                 </DialogDescription>
               </DialogHeader>
@@ -122,9 +106,8 @@ export const columns: ColumnDef<FetchUserData>[] = [
                 <DialogClose asChild>
                   <Button variant="outline">Cancelar</Button>
                 </DialogClose>
-                <Button variant="destructive" onClick={handleDeleteUser}>
-                  Confirmar
-                </Button>
+                {/** onClick={handleDeleteclient}*/}
+                <Button variant="destructive">Confirmar</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>

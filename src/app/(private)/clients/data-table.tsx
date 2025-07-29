@@ -21,7 +21,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React from "react";
-import { CreateUsuarioDialog } from "@/components/user-dialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -62,8 +61,7 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        {/* Dialog para criação de usuario */}
-        <CreateUsuarioDialog />
+        {/* Dialog para criação de usuario <CreateUsuarioDialog />*/}
       </div>
       <div className="rounded-md border">
         <Table>

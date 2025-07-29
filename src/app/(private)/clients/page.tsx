@@ -8,16 +8,16 @@ import {
 } from "@/components/ui/card";
 import React from "react";
 import { columns } from "./columns";
-import { getUsersData } from "@/app/actions/users.actions";
+import { getDataClients } from "@/app/actions/clients.actions";
 
-export default async function Usuarios() {
-  const data = await getUsersData();
+export default async function ClientsPage() {
+  const data = await getDataClients();
   return (
     <div className="flex flex-1 flex-col p-2">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Usuários</CardTitle>
-          <CardDescription>Gerencie os usuários cadastrados</CardDescription>
+          <CardTitle className="text-2xl">Clientes</CardTitle>
+          <CardDescription>Gerencie os clientes cadastrados</CardDescription>
         </CardHeader>
         <CardContent>
           <DataTable columns={columns} data={data ? data : []} />

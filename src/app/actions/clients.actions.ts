@@ -3,9 +3,9 @@
 import { revalidateTag } from "next/cache";
 import { api } from "@/data/api";
 import { cookies } from "next/headers";
-import { CreateClientData } from "@/schemas/clients.schemas";
+import { CreateClientInput, FetchClientData } from "@/schemas/clients.schemas";
 
-export async function createClienteAction(data: CreateClientData) {
+export async function createClienteAction(data: CreateClientInput) {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
@@ -28,11 +28,11 @@ export async function createClienteAction(data: CreateClientData) {
   return cliente.cliente;
 }
 
-export async function deleteClienteAction(cpfCnpj: string) {
+export async function deleteClienteAction(id: string) {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
-  const response = await api(`clients/${cpfCnpj}`, {
+  const response = await api(`clients/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${refreshToken}`,
@@ -57,21 +57,21 @@ export async function deleteClienteAction(cpfCnpj: string) {
   return;
 }
 
-// export async function getDataClientes(): Promise<FetchClienteSchema[]> {
-//   const cookieStore = await cookies();
-//   const refreshToken = cookieStore.get("refreshToken")?.value;
+export async function getDataClients(): Promise<FetchClientData[]> {
+  const cookieStore = await cookies();
+  const refreshToken = cookieStore.get("refreshToken")?.value;
 
-//   const data = await api("clients", {
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${refreshToken}`,
-//     },
-//     credentials: "include",
-//     next: {
-//       tags: ["clients"], // Tag for cache invalidation
-//     },
-//   });
-//   const clientes: { clientes: FetchClienteSchema[] } = await data.json();
+  const data = await api("clients", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${refreshToken}`,
+    },
+    credentials: "include",
+    next: {
+      tags: ["clients"], // Tag for cache invalidation
+    },
+  });
+  const clientes: { clientes: FetchClientData[] } = await data.json();
 
-//   return clientes.clientes;
-//}
+  return clientes.clientes;
+}
