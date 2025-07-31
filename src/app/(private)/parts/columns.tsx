@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Edit, MoreHorizontal, SquareUserRound, Trash2 } from "lucide-react";
+import { Edit, MoreHorizontal, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -22,45 +22,39 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { FetchClientData } from "@/schemas/clients.schemas";
-import { deleteClienteAction } from "@/app/actions/clients.actions";
-import { ClientDialog } from "@/components/client-dialog";
+import { Part } from "@/schemas/parts.schemas";
 
-export const columns: ColumnDef<FetchClientData>[] = [
+export const columns: ColumnDef<Part>[] = [
   {
     accessorKey: "name",
-    header: "Nome",
+    header: "Peça",
   },
   {
-    accessorKey: "cpfCnpj",
-    header: "Cpf/Cnpj",
+    accessorKey: "quantity",
+    header: "Quantidade",
   },
   {
-    accessorKey: "phone",
-    header: "Telefone",
+    accessorKey: "unitPrice",
+    header: "Preço",
   },
   {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "address",
-    header: "Endereço",
+    accessorKey: "description",
+    header: "Descrição",
   },
   {
     id: "actions",
     header: "Ações",
     cell: ({ row }) => {
-      const client = row.original;
+      const part = row.original;
       const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
       const [editDialogOpen, setEditDialogOpen] = useState(false);
 
-      async function handleDeleteClient() {
+      async function handleDeletePart() {
         try {
-          await deleteClienteAction(client.id);
-          toast.success("Cliente excluído com sucesso");
+          //await deleteVehicleAction(part.id);
+          toast.success("Peça excluída com sucesso");
         } catch (err) {
-          toast.error("Erro ao excluir o cliente");
+          toast.error("Erro ao excluir o peça");
         } finally {
           setDeleteDialogOpen(false);
         }
@@ -68,7 +62,7 @@ export const columns: ColumnDef<FetchClientData>[] = [
 
       function handleEditSuccess() {
         setEditDialogOpen(false);
-        toast.success("Cliente editado com sucesso");
+        toast.success("Peça editado com sucesso");
       }
 
       return (
@@ -89,12 +83,6 @@ export const columns: ColumnDef<FetchClientData>[] = [
                 Editar
               </DropdownMenuItem>
 
-              {/** TODO: Criar pagina para vizualizar detalhes do cliente, como veiculos e ordens de serviços*/}
-              <DropdownMenuItem>
-                <SquareUserRound className="mr-2 h-4 w-4" />
-                Detalhes
-              </DropdownMenuItem>
-
               <DropdownMenuSeparator />
 
               <DropdownMenuItem
@@ -108,20 +96,23 @@ export const columns: ColumnDef<FetchClientData>[] = [
           </DropdownMenu>
 
           {/* Dialog de edição */}
-          <ClientDialog
+          {/* <VehicleDialog
             mode="edit"
-            client={{
-              id: client.id,
-              name: client.name,
-              cpfCnpj: client.cpfCnpj,
-              phone: client.phone ? client.phone : "",
-              email: client.email ? client.email : "",
-              address: client.address ? client.address : "",
+            vehicle={{
+              plate: vehicle.plate,
+              model: vehicle.model,
+              brand: vehicle.brand,
+              kilometers: vehicle.kilometers,
+              year: vehicle.year ? vehicle.year : 0,
+              clientId: vehicle.clientId,
+              id: vehicle.id,
+              createdAt: vehicle.createdAt,
+              updatedAt: vehicle.updatedAt,
             }}
             open={editDialogOpen}
             onOpenChange={setEditDialogOpen}
             onSuccess={handleEditSuccess}
-          />
+          /> */}
 
           {/* Dialog de confirmação */}
           <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
@@ -129,8 +120,8 @@ export const columns: ColumnDef<FetchClientData>[] = [
               <DialogHeader>
                 <DialogTitle>Confirmar exclusão</DialogTitle>
                 <DialogDescription>
-                  Tem certeza que deseja excluir o cliente{" "}
-                  <strong>{client.name}</strong>? Esta ação não poderá ser
+                  Tem certeza que deseja excluir a peça{" "}
+                  <strong>{part.name}</strong>? Esta ação não poderá ser
                   desfeita.
                 </DialogDescription>
               </DialogHeader>
@@ -138,7 +129,7 @@ export const columns: ColumnDef<FetchClientData>[] = [
                 <DialogClose asChild>
                   <Button variant="outline">Cancelar</Button>
                 </DialogClose>
-                <Button variant="destructive" onClick={handleDeleteClient}>
+                <Button variant="destructive" onClick={handleDeletePart}>
                   Confirmar
                 </Button>
               </DialogFooter>

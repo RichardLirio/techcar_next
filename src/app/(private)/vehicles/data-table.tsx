@@ -61,8 +61,6 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  //TODO: VERIFICAR O MAXIMO DE DADOS A TABLE POSSUI
-
   return (
     <div>
       <div className="flex items-center py-4 gap-4">

@@ -1,7 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { Car, CarIcon, LayoutDashboardIcon, Users, Wrench } from "lucide-react";
+import {
+  Car,
+  CarIcon,
+  LayoutDashboardIcon,
+  Package,
+  Users,
+  Wrench,
+} from "lucide-react";
 import { NavMain } from "@/components/nav-main";
 import { Separator } from "@/components/ui/separator";
 import { NavUser } from "@/components/nav-user";
@@ -50,6 +57,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       { title: "Dashboard", url: "/", icon: LayoutDashboardIcon },
       { title: "Clientes", url: "/clients", icon: Users },
       { title: "Veículos", url: "/vehicles", icon: CarIcon },
+      { title: "Peças", url: "/parts", icon: Package },
     ],
     navSecondary: [{ title: "Usuários", url: "/admin/usuarios", icon: Wrench }],
   };

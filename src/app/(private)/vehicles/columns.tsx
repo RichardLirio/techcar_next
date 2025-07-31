@@ -72,7 +72,7 @@ export const columns: ColumnDef<FetchVehicleData>[] = [
 
       function handleEditSuccess() {
         setEditDialogOpen(false);
-        toast.success("Cliente editado com sucesso");
+        toast.success("Veículo editado com sucesso");
       }
 
       return (
