@@ -27,7 +27,7 @@ import {
   updateClientAction,
 } from "@/app/actions/clients.actions";
 
-interface Client {
+export interface Client {
   id: string;
   name: string;
   cpfCnpj: string;

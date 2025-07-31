@@ -10,7 +10,7 @@ async function StoreLayout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider>
       <AuthProvider user={user}>
-        <AppSidebar variant="floating" />
+        <AppSidebar variant="inset" />
       </AuthProvider>
       <SidebarInset>
         <SiteHeader />

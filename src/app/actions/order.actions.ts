@@ -5,10 +5,10 @@ import { api } from "@/data/api";
 import { cookies } from "next/headers";
 import { ErrorResponse, SuccessResponse } from "@/@types/response";
 import {
-  CreatePartInput,
-  Part,
-  UpdatePartInput,
-} from "@/schemas/parts.schemas";
+  CreateOrderInput,
+  FetchOrderData,
+  UpdateOrderInput,
+} from "@/schemas/order.schemas";
 
 function isSuccessResponse<T>(
   response: SuccessResponse<T> | ErrorResponse
@@ -16,11 +16,11 @@ function isSuccessResponse<T>(
   return response.success === true;
 }
 
-export async function createPartAction(data: CreatePartInput) {
+export async function createOrderAction(data: CreateOrderInput) {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
-  const response = await api("parts", {
+  const response = await api("orders", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -34,16 +34,16 @@ export async function createPartAction(data: CreatePartInput) {
 
   if (!response.ok) throw new Error(responseData.error);
 
-  revalidateTag("parts");
+  revalidateTag("orders");
 
   return responseData;
 }
 
-export async function deletePartAction(id: string) {
+export async function deleteOrderAction(id: string) {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
-  const response = await api(`parts/${id}`, {
+  const response = await api(`orders/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${refreshToken}`,
@@ -52,7 +52,7 @@ export async function deletePartAction(id: string) {
   });
 
   if (response.status === 204) {
-    revalidateTag("parts");
+    revalidateTag("orders");
     return;
   }
   const responseData = await response.json();
@@ -62,35 +62,36 @@ export async function deletePartAction(id: string) {
   return;
 }
 
-export async function getDataParts() {
+export async function getDataOrders() {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
-  const response = await api("parts", {
+  const response = await api("orders", {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${refreshToken}`,
     },
     credentials: "include",
     next: {
-      tags: ["parts"], // Tag for cache invalidation
+      tags: ["orders"], // Tag for cache invalidation
     },
   });
-  const responseData: SuccessResponse<{ parts: Part[] }> | ErrorResponse =
-    await response.json();
+  const responseData:
+    | SuccessResponse<{ orders: FetchOrderData[] }>
+    | ErrorResponse = await response.json();
 
   if (isSuccessResponse(responseData)) {
-    return responseData.data?.parts;
+    return responseData.data?.orders;
   } else {
     throw new Error(responseData.error.toString());
   }
 }
 
-export async function updatePartAction(id: string, data: UpdatePartInput) {
+export async function updateOrderAction(id: string, data: UpdateOrderInput) {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
-  const response = await api(`parts/${id}`, {
+  const response = await api(`orders/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -104,7 +105,7 @@ export async function updatePartAction(id: string, data: UpdatePartInput) {
 
   if (!response.ok) throw new Error(responseData.error);
 
-  revalidateTag("parts");
+  revalidateTag("orders");
 
   return responseData;
 }

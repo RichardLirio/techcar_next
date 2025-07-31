@@ -21,19 +21,25 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
-import { VehicleDialog } from "@/components/vehicle-dialog";
+import { ServiceOrderDialog } from "@/components/order-dialog";
 import { FetchClientData } from "@/schemas/clients.schemas";
+import { Vehicle } from "@/schemas/vehicles.schemas";
+import { Part } from "@/schemas/parts.schemas";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  clients?: FetchClientData[];
+  clients: FetchClientData[];
+  vehicles: Vehicle[];
+  parts: Part[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   clients,
+  vehicles,
+  parts,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -64,15 +70,33 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4 gap-4">
         <Input
-          placeholder="Filtrar Placas..."
-          value={(table.getColumn("plate")?.getFilterValue() as string) ?? ""}
+          placeholder="Filtrar cliente..."
+          value={
+            (table.getColumn("clientName")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("plate")?.setFilterValue(event.target.value)
+            table.getColumn("clientName")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        {/* Dialog para criação de clientes */}
-        <VehicleDialog mode="create" clients={clients} />
+        <Input
+          placeholder="Filtrar placas..."
+          value={
+            (table.getColumn("vehiclePlate")?.getFilterValue() as string) ?? ""
+          }
+          onChange={(event) =>
+            table.getColumn("vehiclePlate")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+        {/* Dialog para criação de peças */}
+
+        <ServiceOrderDialog
+          mode="create"
+          clients={clients ? clients : []}
+          vehicles={vehicles ? vehicles : []}
+          parts={parts ? parts : []}
+        />
       </div>
       <div className="rounded-md border">
         <Table>

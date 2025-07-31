@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   Car,
   CarIcon,
+  ClipboardList,
   LayoutDashboardIcon,
   Package,
   Users,
@@ -58,6 +59,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       { title: "Clientes", url: "/clients", icon: Users },
       { title: "Veículos", url: "/vehicles", icon: CarIcon },
       { title: "Peças", url: "/parts", icon: Package },
+      { title: "Ordens de Serviço", url: "/orders", icon: ClipboardList },
     ],
     navSecondary: [{ title: "Usuários", url: "/admin/usuarios", icon: Wrench }],
   };
