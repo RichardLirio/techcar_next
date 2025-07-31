@@ -99,6 +99,7 @@ export async function updatePartAction(id: string, data: UpdatePartInput) {
     body: JSON.stringify(data),
     credentials: "include",
   });
+  console.log("🚀 ~ updatePartAction ~ response:", response);
 
   const responseData = await response.json();
 

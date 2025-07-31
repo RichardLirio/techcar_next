@@ -21,6 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
+import { PartDialog } from "@/components/parts-dialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -67,8 +68,8 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        {/* Dialog para criação de clientes */}
-        {/* <VehicleDialog mode="create" clients={clients} /> */}
+        {/* Dialog para criação de peças */}
+        <PartDialog mode="create" />
       </div>
       <div className="rounded-md border">
         <Table>

@@ -23,6 +23,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Part } from "@/schemas/parts.schemas";
+import { deletePartAction } from "@/app/actions/part.actions";
+import { PartDialog } from "@/components/parts-dialog";
+
+function formatToBRL(value: number): string {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
 
 export const columns: ColumnDef<Part>[] = [
   {
@@ -30,12 +41,16 @@ export const columns: ColumnDef<Part>[] = [
     header: "Peça",
   },
   {
-    accessorKey: "quantity",
-    header: "Quantidade",
-  },
-  {
     accessorKey: "unitPrice",
     header: "Preço",
+    cell: ({ row }) => {
+      const price = parseFloat(row.getValue("unitPrice"));
+      return <div className="font-medium">{formatToBRL(price)}</div>;
+    },
+  },
+  {
+    accessorKey: "quantity",
+    header: "Quantidade",
   },
   {
     accessorKey: "description",
@@ -51,7 +66,7 @@ export const columns: ColumnDef<Part>[] = [
 
       async function handleDeletePart() {
         try {
-          //await deleteVehicleAction(part.id);
+          await deletePartAction(part.id);
           toast.success("Peça excluída com sucesso");
         } catch (err) {
           toast.error("Erro ao excluir o peça");
@@ -62,7 +77,7 @@ export const columns: ColumnDef<Part>[] = [
 
       function handleEditSuccess() {
         setEditDialogOpen(false);
-        toast.success("Peça editado com sucesso");
+        toast.success("Peça editada com sucesso");
       }
 
       return (
@@ -96,23 +111,19 @@ export const columns: ColumnDef<Part>[] = [
           </DropdownMenu>
 
           {/* Dialog de edição */}
-          {/* <VehicleDialog
+          <PartDialog
             mode="edit"
-            vehicle={{
-              plate: vehicle.plate,
-              model: vehicle.model,
-              brand: vehicle.brand,
-              kilometers: vehicle.kilometers,
-              year: vehicle.year ? vehicle.year : 0,
-              clientId: vehicle.clientId,
-              id: vehicle.id,
-              createdAt: vehicle.createdAt,
-              updatedAt: vehicle.updatedAt,
+            part={{
+              id: part.id,
+              name: part.name,
+              quantity: part.quantity,
+              unitPrice: part.unitPrice,
+              description: part.description,
             }}
             open={editDialogOpen}
             onOpenChange={setEditDialogOpen}
             onSuccess={handleEditSuccess}
-          /> */}
+          />
 
           {/* Dialog de confirmação */}
           <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>

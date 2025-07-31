@@ -35,9 +35,9 @@ Projeto frontend para o TechCar, aplicação de gestão para oficinas mecanicas.
 ## peças
 [x] Pagina de peças
 [x] Lista de peças
-[] Criar novo peças
-[] Deletar peças
-[] Atualizar peças
+[x] Criar novo peças
+[x] Deletar peças
+[x] Atualizar peças
 
 ## Ordem serviço
 [] Pagina de ordens
