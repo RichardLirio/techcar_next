@@ -91,13 +91,13 @@ export function ServiceOrderDialog({
   const [selectedClientId, setSelectedClientId] = useState<string>("");
   const [newService, setNewService] = useState({ description: "", price: 0 });
   const [newItem, setNewItem] = useState({ partId: "", quantity: 1 });
+  const [discount, setDiscount] = useState(0);
 
   const isEditing = mode === "edit";
 
   // Usar estado controlado se fornecido, senão usar estado interno
   const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
   const setOpen = onOpenChange || setInternalOpen;
-
   const {
     register,
     handleSubmit,
@@ -136,6 +136,7 @@ export function ServiceOrderDialog({
       setSelectedClientId(serviceOrder.clientId);
       setServices(serviceOrder.services);
       setItems(serviceOrder.items);
+      setDiscount(serviceOrder.discount);
     }
   }, [serviceOrder, isEditing, setValue]);
 
@@ -241,6 +242,7 @@ export function ServiceOrderDialog({
         setServices([]);
         setItems([]);
         setSelectedClientId("");
+        setDiscount(0);
         onSuccess?.();
         return;
       }
@@ -265,15 +267,18 @@ export function ServiceOrderDialog({
           vehicleId: serviceOrder.vehicleId,
           description: serviceOrder.description,
           kilometers: serviceOrder.kilometers,
+          discount: serviceOrder.discount,
         });
         setSelectedClientId(serviceOrder.clientId);
         setServices(serviceOrder.services);
         setItems(serviceOrder.items);
+        setDiscount(serviceOrder.discount);
       } else {
         reset();
         setServices([]);
         setItems([]);
         setSelectedClientId("");
+        setDiscount(0);
       }
     }
   }
@@ -302,7 +307,8 @@ export function ServiceOrderDialog({
     (sum, item) => sum + item.quantity * Number(item.unitPrice),
     0
   );
-  const totalOrder = totalServices + totalItems;
+  const subtotal = totalServices + totalItems;
+  const totalOrder = subtotal - Number(discount);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -379,6 +385,23 @@ export function ServiceOrderDialog({
                 type="number"
                 {...register("kilometers", { valueAsNumber: true })}
                 placeholder="Digite a quilometragem"
+              />
+            </div>
+
+            {/* Desconto */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Desconto (R$)</label>
+              <Input
+                type="number"
+                step="0.01"
+                min="0"
+                {...register("discount", { valueAsNumber: true })}
+                onChange={(e) => {
+                  const value = Number(e.target.value) || 0;
+                  setDiscount(value);
+                }}
+                placeholder="0.00"
+                defaultValue={0}
               />
             </div>
           </div>
@@ -585,22 +608,34 @@ export function ServiceOrderDialog({
             )}
           </div>
 
-          {/* Resumo dos totais */}
+          {/* Resumo dos totais com desconto */}
           {(services.length > 0 || items.length > 0) && (
             <div className="border rounded-lg p-4 bg-gray-50">
               <h4 className="font-medium mb-2">Resumo</h4>
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
                   <span>Total Serviços:</span>
-                  <span>R$ {totalServices.toFixed(2)}</span>
+                  <span>R$ {Number(totalServices).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Total Peças:</span>
-                  <span>R$ {totalItems.toFixed(2)}</span>
+                  <span>R$ {Number(totalItems).toFixed(2)}</span>
                 </div>
+                <div className="flex justify-between border-t pt-1">
+                  <span>Subtotal:</span>
+                  <span>R$ {Number(subtotal).toFixed(2)}</span>
+                </div>
+                {discount > 0 && (
+                  <div className="flex justify-between text-red-600">
+                    <span>Desconto:</span>
+                    <span>- R$ {Number(discount).toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between font-medium text-base border-t pt-1">
-                  <span>Total Geral:</span>
-                  <span>R$ {totalOrder.toFixed(2)}</span>
+                  <span>Total Final:</span>
+                  <span className={discount > 0 ? "text-green-600" : ""}>
+                    R$ {Number(totalOrder).toFixed(2)}
+                  </span>
                 </div>
               </div>
             </div>

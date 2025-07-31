@@ -21,26 +21,18 @@ export const orderItemSchema = z.object({
 export const createOrderSchema = z.object({
   clientId: z.string().min(1, "Cliente é obrigatório"),
   vehicleId: z.string().min(1, "Veículo é obrigatório"),
-  orderId: z.string().min(1, "Veículo é obrigatório"),
   description: z.string().toUpperCase().optional(),
   kilometers: z.number().min(1, "Quilometragem é obrigatória"),
   status: z.enum(["IN_PROGRESS", "COMPLETED", "CANCELLED"]).optional(),
-  discount: z
-    .number()
-    .min(0, "Desconto deve ser maior ou igual a 0")
-    .default(0),
+  discount: z.number().default(0),
 });
 
 export const updateOrderSchema = z.object({
   clientId: z.string().min(1, "Cliente é obrigatório").optional(),
   vehicleId: z.string().min(1, "Veículo é obrigatório").optional(),
-  orderId: z.string().min(1, "Veículo é obrigatório").optional(),
   description: z.string().toUpperCase().optional(),
   kilometers: z.number().min(1, "Quilometragem é obrigatória").optional(),
-  discount: z
-    .number()
-    .min(0, "Desconto deve ser maior ou igual a 0")
-    .optional(),
+  discount: z.number().optional(),
   status: z.enum(["IN_PROGRESS", "COMPLETED", "CANCELLED"]).optional(),
 });
 
@@ -99,3 +91,4 @@ export type UpdateOrderInput = z.infer<typeof updateOrderSchema>;
 export type ServiceInput = z.infer<typeof serviceSchema>;
 export type OrderItemInput = z.infer<typeof orderItemSchema>;
 export type FetchOrderData = z.infer<typeof fetchOrderSchema>;
+export type Service = z.infer<typeof serviceSchema>;
