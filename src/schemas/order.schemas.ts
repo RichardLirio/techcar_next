@@ -41,7 +41,7 @@ export const fetchOrderSchema = z.object({
   clientId: z.string().uuid(),
   vehicleId: z.string().uuid(),
   orderId: z.string().uuid(),
-  status: z.enum(["IN_PROGRESS", "COMPLETED", "CANCELLED"]).optional(),
+  status: z.enum(["IN_PROGRESS", "COMPLETED", "CANCELLED"]),
   description: z.string().toUpperCase().optional(),
   kilometers: z.number(),
   discount: z.coerce.number(),
