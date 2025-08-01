@@ -13,7 +13,7 @@ import { getDataVehicles } from "@/app/actions/vehicles.actions";
 import { getDataParts } from "@/app/actions/part.actions";
 
 export default async function VehiclesPage() {
-  const data = await getDataOrders();
+  const orders = await getDataOrders();
   const clients = await getDataClients();
   const vehicles = await getDataVehicles();
   const parts = await getDataParts();
@@ -29,7 +29,7 @@ export default async function VehiclesPage() {
         </CardHeader>
         <CardContent>
           <OrdersTableClient
-            data={data ? data : []}
+            data={orders ? orders : []}
             clients={clients ? clients : []}
             vehicles={vehicles ? vehicles : []}
             parts={parts ? parts : []}

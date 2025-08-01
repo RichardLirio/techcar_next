@@ -190,7 +190,7 @@ export function PartDialog({
               id="name"
               className="col-span-3"
               {...register("name")}
-              placeholder={errors.name?.message || "Digite o nomea da peça"}
+              placeholder={errors.name?.message || "Digite o nome da peça"}
             />
 
             {/* Descrição */}

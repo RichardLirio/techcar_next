@@ -160,7 +160,6 @@ export const createColumns = (
           await printOrderAction(order.id);
           toast.success("Ordem de serviço gerada com sucesso");
         } catch (err) {
-          console.log("🚀 ~ handlePrintOrder ~ err:", err);
           toast.error("Erro ao imprimir a ordem de serviço");
         } finally {
           setLoadingDialogOpen(false); // Fecha o modal de carregamento
