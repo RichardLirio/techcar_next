@@ -4,9 +4,9 @@ Projeto frontend para o TechCar, aplicação de gestão para oficinas mecanicas.
 
 
 ## Dashboard
-[] pagina de dashboard
-[] cards de total de clientes, total de veiculos, peças em estoque, ordens de serviço
-[] Lista de ordens de serviços recentes
+[x] pagina de dashboard
+[x] cards de total de clientes, total de veiculos, peças em estoque, ordens de serviço
+[x] Lista de ordens de serviços recentes
 [] Botão para criar nova ordem de serviço direto na pagina inicial
 
 ## Usuarios
@@ -40,13 +40,13 @@ Projeto frontend para o TechCar, aplicação de gestão para oficinas mecanicas.
 [x] Atualizar peças
 
 ## Ordem serviço
-[] Pagina de ordens
-[] Lista de ordens
-[] Criar novo ordens
-[] Deletar ordens
-[] Atualizar ordens
-[] imprimir ordens
-[] detalhes ordens
+[x] Pagina de ordens
+[x] Lista de ordens
+[x] Criar novo ordens
+[x] Deletar ordens
+[x] Atualizar ordens
+[x] imprimir ordens
+[x] detalhes ordens
 
 ## Relatorios
 [] Estoque de peças
